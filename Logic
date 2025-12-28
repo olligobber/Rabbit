@@ -1,0 +1,66 @@
+Each rabbit has 6 textures:
+	BackLeg
+	Down
+	FrontLeg
+	Nom
+	Up
+	Ear
+
+Each rabbit has 5 states:
+	Standing
+	Sitting
+	Eating
+	Ear flopped
+	Walking
+
+Each rabbit also has:
+	A direction it is facing
+	An x position
+	A y position
+	A cycle number for eating or walking or getting bored
+
+Texture is:
+	When walking, texture cycles between Up, FrontLeg, BackLeg
+	When standing, texture is Up
+	When ear is flopped, texture is Ear
+	When sitting, texture is Down
+	When eating, texture alternates between Down and Nom
+	Texture is flipped based on direction facing
+
+Transition logic is:
+	When walking and texture is Up:
+		there is a 1/4 chance to stop walking
+		moving left at x < 16 stops walking
+		moving right at x > 104 stops walking
+	When walking:
+		x changes by between 2 and 4 in the direction facing
+		there is a 2/5 chance to try to move vertically:
+			half of attempts move up and succeed if y > 0
+			half of attempts move down and succeed if y < 80
+	When standing:
+		A random number between 0 and 19 is chosen, and if that is less than the number of cycles since standing started, then one of four things happens randomly:
+			start sitting
+			turn around
+			flop ear
+			start walking
+	When ear is flopped:
+		A random number between 0 and 19 is chosen, and if that is less than the number of cycles since standing started, then start standing
+	When sitting:
+		A random number between 0 and 19 is chosen, and if that is less than the number of cycles since sitting started, then:
+			1/3 of the time, start standing
+			2/3 of the time, start earing
+	When eating:
+		A random number between 0 and 49 is chosen, and if that is less than the number of cycles since eating started, then start sitting
+
+Rabbits are initialised with:
+	Random x position between 20 and 91
+	Random y position between 16 and 61
+	Random direction facing
+	Standing
+
+Screen is:
+	128 x 96
+
+Rabbits are updated every 150 ms
+
+Higher up rabbits are drawn behind lower down rabbits
