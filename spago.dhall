@@ -1,5 +1,13 @@
 { name = "rabbits"
-, dependencies = [ "effect", "prelude" ]
+, dependencies = [
+	"effect",
+	"prelude",
+	"halogen",
+	"foldable-traversable",
+	"random",
+	"nonempty",
+	"aff"
+	]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]
 }

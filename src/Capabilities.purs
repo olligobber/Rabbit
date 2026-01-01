@@ -1,12 +1,14 @@
 module Capabilities(
-	MonadRandom(choose),
+    class MonadRandom, choose, range
 ) where
 
-class MonadRandom m <= Monad m where
-	-- Randomly choose from a list of options with uniform probability
-	choose :: forall f x. Foldable f => f x -> m x
+import Prelude (class Monad)
+import Data.Semigroup.Foldable (class Foldable1)
 
-	-- Randomly choose an integer in an inclusive range with uniform probability
-	range :: Int -> Int -> m Int
-	range s e = choose $ s..e
+class Monad m <= MonadRandom m where
+    -- Randomly choose from a list of options with uniform probability
+    choose :: forall f x. Foldable1 f => f x -> m x
+
+    -- Randomly choose an integer in an inclusive range with uniform probability
+    range :: Int -> Int -> m Int
 
