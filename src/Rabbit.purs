@@ -1,19 +1,26 @@
 module Rabbit (
+    Query,
     Slot,
+    Rabbit,
     component
 ) where
 
 import Prelude (
     class Eq, class Show,
-    mod, negate, pure, bind, show,
-    ($), (==), (+), (<>), (<), (>), (<=), (>=), (&&), (*),
+    mod, negate, pure, bind, discard, show, unit,
+    ($), (==), (+), (<>), (<), (>), (<=), (>=), (&&), (*), (=<<),
     Unit, Void
     )
+import Control.Monad.Rec.Class (forever)
 import Data.Foldable (fold)
+import Data.Maybe (Maybe(Just, Nothing))
 import Data.NonEmpty (NonEmpty(NonEmpty))
+import Effect.Aff as Aff
+import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Halogen.Subscription as HS
 
 import Capabilities (class MonadRandom, choose, range)
 
@@ -103,9 +110,9 @@ tick (Rabbit r) = case r.state of
             stop <- choose $ NonEmpty true [false, false, false]
             if stop then
                 pure $ gotoState Standing $ Rabbit r
-            else if r.x < 16 && r.direction == Left then
+            else if r.x < 8 && r.direction == Left then
                 pure $ gotoState Standing $ Rabbit r
-            else if r.x > 104 && r.direction == Right then
+            else if r.x > 96 && r.direction == Right then
                 pure $ gotoState Standing $ Rabbit r
             else
                 walk $ Rabbit r
@@ -155,16 +162,23 @@ new = do
         state : Standing
         }
 
-render :: forall m. String -> Rabbit -> H.ComponentHTML Unit () m
-render source (Rabbit r) = HH.img [
+render :: forall m. String -> (Maybe Rabbit) -> H.ComponentHTML Unit () m
+render _ Nothing = HH.div_ []
+render source (Just (Rabbit r)) = HH.img [
     HP.src $ source <> show (texture $ Rabbit r) <> ".png",
     HP.style $ fold [
+        "position: relative; ",
+        "image-rendering: pixelated; ",
         "left: ",
         show r.x,
-        "px; top: ",
+        "px; ",
+        "top: ",
         show r.y,
         "px; ",
-        if r.direction == Left then
+        "z-index: ",
+        show r.y,
+        "; ",
+        if r.direction == Right then
             "transform: scaleX(-1); "
         else
             ""
@@ -175,9 +189,27 @@ type Slot = H.Slot Query Void
 
 data Query a = Update a
 
-component :: forall m. MonadRandom m => String -> H.Component Query Rabbit Unit m
-component source = H.mkComponent{
-    initialState : new,
+timer :: forall m. MonadAff m => m (HS.Emitter Unit)
+timer = do
+    {emitter, listener} <- H.liftEffect HS.create
+    _ <- H.liftAff $ Aff.forkAff $ forever do
+        Aff.delay $ Aff.Milliseconds 150.0
+        H.liftEffect $ HS.notify listener unit
+    pure emitter
+
+component :: forall m. MonadRandom m => MonadAff m => String -> H.Component Query (Maybe Rabbit) Unit m
+component source = H.mkComponent {
+    initialState : pure Nothing,
     render : render source,
-    eval : H.mkEval $ H.defaultEval { handleAction = pure tick }
+    eval : H.mkEval $ H.defaultEval {
+        handleAction = pure do
+            oldRab <- H.get
+            newRab <- case oldRab of
+                Just rab -> tick rab
+                Nothing -> do
+                    _ <- H.subscribe =<< timer
+                    new
+            H.put $ Just newRab,
+        initialize = Just unit
+        }
     }

@@ -1,15 +1,22 @@
 module Main where
 
 import Prelude
+import Data.Maybe (Maybe(Nothing))
 import Effect (Effect)
+import Effect.Aff.Class (class MonadAff)
 import Halogen as H
-import Halogen.HTML as HH
 import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
+import Halogen.VDom.Driver (runUI)
+import Type.Proxy (Proxy(Proxy))
 
+import AppState (run)
+import Capabilities (class MonadRandom)
 import Rabbit as Rabbit
 
 main :: Effect Unit
-main = HA.runHalogenAff $ HA.awaitBody >>= runUI component
+main = HA.runHalogenAff $ HA.awaitBody >>= runUI (H.hoist run component) unit
 
 type Slots = (
     one :: Rabbit.Slot Unit,
@@ -17,26 +24,26 @@ type Slots = (
     three :: Rabbit.Slot Unit
     )
 
-_one :: SProxy "one"
-_one = SProxy
+_one :: Proxy "one"
+_one = Proxy
 
-_two :: SProxy "two"
-_two = SProxy
+_two :: Proxy "two"
+_two = Proxy
 
-_three :: SProxy "three"
-_three = SProxy
+_three :: Proxy "three"
+_three = Proxy
 
-component :: forall q m. H.Component q Unit Unit m
+component :: forall q m. MonadRandom m => MonadAff m => H.Component q Unit Unit m
 component = H.mkComponent {
-    initialState : unit,
+    initialState : pure unit,
     render : pure $ HH.div
         [
-
+            HP.style "overflow: hidden; width: 128px; height: 96px; margin: 0; padding: 0; background: url(\"./Images/Field.png\"); image-rendering: pixelated;"
         ]
         [
-            HH.slot _one unit (Rabbit.component "Images/Rab") unit,
-            HH.slot _two unit (Rabbit.component "Images/Rab2") unit,
-            HH.slot _three unit (Rabbit.component "Images/Rab3") unit
+            HH.slot_ _one unit (Rabbit.component "./Images/Rab") Nothing,
+            HH.slot_ _two unit (Rabbit.component "./Images/2Rab") Nothing,
+            HH.slot_ _three unit (Rabbit.component "./Images/3Rab") Nothing
         ]
-    , eval : pure $ pure unit
+    , eval : H.mkEval $ H.defaultEval
     }

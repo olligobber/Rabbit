@@ -6,7 +6,10 @@
 	"foldable-traversable",
 	"random",
 	"nonempty",
-	"aff"
+	"aff",
+	"maybe",
+	"halogen-subscriptions",
+	"tailrec"
 	]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]
