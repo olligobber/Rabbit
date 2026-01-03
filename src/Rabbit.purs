@@ -21,6 +21,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Subscription as HS
+import Web.HTML.Common (ClassName(ClassName))
 
 import Capabilities (class MonadRandom, choose, range)
 
@@ -166,9 +167,15 @@ render :: forall m. String -> (Maybe Rabbit) -> H.ComponentHTML Unit () m
 render _ Nothing = HH.div_ []
 render source (Just (Rabbit r)) = HH.img [
     HP.src $ source <> show (texture $ Rabbit r) <> ".png",
+    HP.classes [
+        ClassName "rabbit",
+        ClassName
+            if r.direction == Right then
+                "right"
+            else
+                "left"
+        ],
     HP.style $ fold [
-        "position: absolute; ",
-        "image-rendering: pixelated; ",
         "left: ",
         show r.x,
         "px; ",
@@ -177,11 +184,7 @@ render source (Just (Rabbit r)) = HH.img [
         "px; ",
         "z-index: ",
         show r.y,
-        "; ",
-        if r.direction == Right then
-            "transform: scaleX(-1); "
-        else
-            ""
+        "; "
         ]
     ]
 

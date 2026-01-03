@@ -9,7 +9,8 @@
 	"aff",
 	"maybe",
 	"halogen-subscriptions",
-	"tailrec"
+	"tailrec",
+	"web-html"
 	]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]

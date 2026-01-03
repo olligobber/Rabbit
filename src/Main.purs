@@ -38,7 +38,7 @@ component = H.mkComponent {
     initialState : pure unit,
     render : pure $ HH.div
         [
-            HP.style "overflow: hidden; width: 128px; height: 96px; margin: 0; padding: 0; background: url(\"./Images/Field.png\"); image-rendering: pixelated;"
+            HP.id "field"
         ]
         [
             HH.slot_ _one unit (Rabbit.component "./Images/Rab") Nothing,

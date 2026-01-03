@@ -1,0 +1,25 @@
+body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+#field {
+	overflow: hidden;
+	width: 128px;
+	height: 96px;
+	margin: 0;
+	padding: 0;
+	background: url("Images/Field.png");
+	image-rendering: pixelated;
+}
+
+.rabbit {
+	position: absolute;
+	image-rendering: pixelated;
+}
+
+.rabbit.right {
+	transform: scaleX(-1);
+}

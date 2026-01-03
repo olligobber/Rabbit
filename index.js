@@ -3694,6 +3694,13 @@
   };
   var empty3 = empty2;
 
+  // output/Data.String.Common/foreign.js
+  var joinWith = function(s) {
+    return function(xs) {
+      return xs.join(s);
+    };
+  };
+
   // output/Halogen.Query.Input/index.js
   var RefUpdate = /* @__PURE__ */ function() {
     function RefUpdate2(value0, value1) {
@@ -6087,11 +6094,21 @@
   var div_ = /* @__PURE__ */ div2([]);
 
   // output/Halogen.HTML.Properties/index.js
+  var unwrap2 = /* @__PURE__ */ unwrap();
   var prop2 = function(dictIsProp) {
     return prop(dictIsProp);
   };
   var prop22 = /* @__PURE__ */ prop2(isPropString);
   var src9 = /* @__PURE__ */ prop22("src");
+  var id2 = /* @__PURE__ */ prop22("id");
+  var classes = /* @__PURE__ */ function() {
+    var $32 = prop22("className");
+    var $33 = joinWith(" ");
+    var $34 = map(functorArray)(unwrap2);
+    return function($35) {
+      return $32($33($34($35)));
+    };
+  }();
   var attr2 = /* @__PURE__ */ function() {
     return attr(Nothing.value);
   }();
@@ -6880,7 +6897,7 @@
   var $$void6 = /* @__PURE__ */ $$void(functorEffect);
   var pure9 = /* @__PURE__ */ pure(applicativeEffect);
   var traverse_6 = /* @__PURE__ */ traverse_(applicativeEffect)(foldableMaybe);
-  var unwrap2 = /* @__PURE__ */ unwrap();
+  var unwrap3 = /* @__PURE__ */ unwrap();
   var when3 = /* @__PURE__ */ when(applicativeEffect);
   var not2 = /* @__PURE__ */ not(/* @__PURE__ */ heytingAlgebraFunction(/* @__PURE__ */ heytingAlgebraFunction(heytingAlgebraBoolean)));
   var identity9 = /* @__PURE__ */ identity(categoryFn);
@@ -6925,7 +6942,7 @@
           return unit;
         };
         var buildWidget2 = function(spec) {
-          var buildThunk2 = buildThunk(unwrap2)(spec);
+          var buildThunk2 = buildThunk(unwrap3)(spec);
           var $lazy_patch = $runtime_lazy8("patch", "Halogen.VDom.Driver", function() {
             return function(st, slot) {
               if (st instanceof Just) {
@@ -7211,7 +7228,7 @@
         return "UpEar";
       }
       ;
-      throw new Error("Failed pattern match at Rabbit (line 39, column 1 - line 45, column 25): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Rabbit (line 40, column 1 - line 46, column 25): " + [v.constructor.name]);
     }
   };
   var show1 = /* @__PURE__ */ show(showTexture);
@@ -7236,7 +7253,7 @@
       });
     }
     ;
-    throw new Error("Failed pattern match at Rabbit (line 102, column 19 - line 104, column 62): " + [v.value0.direction.constructor.name]);
+    throw new Error("Failed pattern match at Rabbit (line 103, column 19 - line 105, column 62): " + [v.value0.direction.constructor.name]);
   };
   var timer = function(dictMonadAff) {
     var MonadEffect0 = dictMonadAff.MonadEffect0();
@@ -7287,7 +7304,7 @@
       return BackLeg.value;
     }
     ;
-    throw new Error("Failed pattern match at Rabbit (line 56, column 22 - line 66, column 21): " + [v.value0.state.constructor.name]);
+    throw new Error("Failed pattern match at Rabbit (line 57, column 22 - line 67, column 21): " + [v.value0.state.constructor.name]);
   };
   var $$new2 = function(dictMonadRandom) {
     var Monad0 = dictMonadRandom.Monad0();
@@ -7412,7 +7429,7 @@
               return 1;
             }
             ;
-            throw new Error("Failed pattern match at Rabbit (line 83, column 19 - line 85, column 27): " + [v.value0.direction.constructor.name]);
+            throw new Error("Failed pattern match at Rabbit (line 84, column 19 - line 86, column 27): " + [v.value0.direction.constructor.name]);
           }();
           return bind15(bind15(choose2(new NonEmpty(-1 | 0, [0, 0, 0, 1])))(function(intended) {
             var $122 = intended === (-1 | 0) && v.value0.y <= 0;
@@ -7464,17 +7481,17 @@
       }
       ;
       if (v1 instanceof Just) {
-        return img([src9(v + (show1(texture(new Rabbit(v1.value0.value0))) + ".png")), style(fold2(["position: absolute; ", "image-rendering: pixelated; ", "left: ", show2(v1.value0.value0.x), "px; ", "top: ", show2(v1.value0.value0.y), "px; ", "z-index: ", show2(v1.value0.value0.y), "; ", function() {
+        return img([src9(v + (show1(texture(new Rabbit(v1.value0.value0))) + ".png")), classes(["rabbit", function() {
           var $129 = eq3(v1.value0.value0.direction)(Right2.value);
           if ($129) {
-            return "transform: scaleX(-1); ";
+            return "right";
           }
           ;
-          return "";
-        }()]))]);
+          return "left";
+        }()]), style(fold2(["left: ", show2(v1.value0.value0.x), "px; ", "top: ", show2(v1.value0.value0.y), "px; ", "z-index: ", show2(v1.value0.value0.y), "; "]))]);
       }
       ;
-      throw new Error("Failed pattern match at Rabbit (line 165, column 1 - line 165, column 74): " + [v.constructor.name, v1.constructor.name]);
+      throw new Error("Failed pattern match at Rabbit (line 166, column 1 - line 166, column 74): " + [v.constructor.name, v1.constructor.name]);
     };
   };
   var tick = function(dictMonadRandom) {
@@ -7558,7 +7575,7 @@
         });
       }
       ;
-      throw new Error("Failed pattern match at Rabbit (line 107, column 19 - line 150, column 35): " + [v.value0.state.constructor.name]);
+      throw new Error("Failed pattern match at Rabbit (line 108, column 19 - line 151, column 35): " + [v.value0.state.constructor.name]);
     };
   };
   var component = function(dictMonadRandom) {
@@ -7587,7 +7604,7 @@
                   });
                 }
                 ;
-                throw new Error("Failed pattern match at Rabbit (line 207, column 23 - line 211, column 24): " + [oldRab.constructor.name]);
+                throw new Error("Failed pattern match at Rabbit (line 210, column 23 - line 214, column 24): " + [oldRab.constructor.name]);
               }())(function(newRab) {
                 return put2(new Just(newRab));
               });
@@ -7632,7 +7649,7 @@
       var component22 = component1(dictMonadAff);
       return mkComponent({
         initialState: pure11(unit),
-        render: pure11(div2([style('overflow: hidden; width: 128px; height: 96px; margin: 0; padding: 0; background: url("./Images/Field.png"); image-rendering: pixelated;')])([slot_1(_one)(unit)(component22("./Images/Rab"))(Nothing.value), slot_22(_two)(unit)(component22("./Images/2Rab"))(Nothing.value), slot_3(_three)(unit)(component22("./Images/3Rab"))(Nothing.value)])),
+        render: pure11(div2([id2("field")])([slot_1(_one)(unit)(component22("./Images/Rab"))(Nothing.value), slot_22(_two)(unit)(component22("./Images/2Rab"))(Nothing.value), slot_3(_three)(unit)(component22("./Images/3Rab"))(Nothing.value)])),
         "eval": mkEval(defaultEval)
       });
     };
