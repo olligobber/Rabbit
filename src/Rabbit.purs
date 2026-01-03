@@ -167,7 +167,7 @@ render _ Nothing = HH.div_ []
 render source (Just (Rabbit r)) = HH.img [
     HP.src $ source <> show (texture $ Rabbit r) <> ".png",
     HP.style $ fold [
-        "position: relative; ",
+        "position: absolute; ",
         "image-rendering: pixelated; ",
         "left: ",
         show r.x,

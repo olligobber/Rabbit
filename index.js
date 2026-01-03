@@ -7464,7 +7464,7 @@
       }
       ;
       if (v1 instanceof Just) {
-        return img([src9(v + (show1(texture(new Rabbit(v1.value0.value0))) + ".png")), style(fold2(["position: relative; ", "image-rendering: pixelated; ", "left: ", show2(v1.value0.value0.x), "px; ", "top: ", show2(v1.value0.value0.y), "px; ", "z-index: ", show2(v1.value0.value0.y), "; ", function() {
+        return img([src9(v + (show1(texture(new Rabbit(v1.value0.value0))) + ".png")), style(fold2(["position: absolute; ", "image-rendering: pixelated; ", "left: ", show2(v1.value0.value0.x), "px; ", "top: ", show2(v1.value0.value0.y), "px; ", "z-index: ", show2(v1.value0.value0.y), "; ", function() {
           var $129 = eq3(v1.value0.value0.direction)(Right2.value);
           if ($129) {
             return "transform: scaleX(-1); ";
