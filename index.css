@@ -9,6 +9,12 @@ body {
 	font-size: min(calc(100vw / 128), calc(100vh / 96));
 }
 
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #111;
+	}
+}
+
 #field {
 	position: relative;
 	overflow: hidden;
