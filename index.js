@@ -7488,7 +7488,7 @@
           }
           ;
           return "left";
-        }()]), style(fold2(["left: ", show2(v1.value0.value0.x), "px; ", "top: ", show2(v1.value0.value0.y), "px; ", "z-index: ", show2(v1.value0.value0.y), "; "]))]);
+        }()]), style(fold2(["left: ", show2(v1.value0.value0.x), "em; ", "top: ", show2(v1.value0.value0.y), "em; ", "z-index: ", show2(v1.value0.value0.y), "; "]))]);
       }
       ;
       throw new Error("Failed pattern match at Rabbit (line 166, column 1 - line 166, column 74): " + [v.constructor.name, v1.constructor.name]);

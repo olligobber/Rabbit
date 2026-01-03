@@ -178,10 +178,10 @@ render source (Just (Rabbit r)) = HH.img [
     HP.style $ fold [
         "left: ",
         show r.x,
-        "px; ",
+        "em; ",
         "top: ",
         show r.y,
-        "px; ",
+        "em; ",
         "z-index: ",
         show r.y,
         "; "
