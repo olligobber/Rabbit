@@ -1,5 +1,5 @@
 module Rabbit (
-    Query,
+    Query(Tick),
     Slot,
     Rabbit,
     component
@@ -7,20 +7,17 @@ module Rabbit (
 
 import Prelude (
     class Eq, class Show,
-    mod, negate, pure, bind, discard, show, unit,
-    ($), (==), (+), (<>), (<), (>), (<=), (>=), (&&), (*), (=<<),
+    mod, negate, pure, bind, discard, show,
+    ($), (==), (+), (<>), (<), (>), (<=), (>=), (&&), (*),
     Unit, Void
     )
-import Control.Monad.Rec.Class (forever)
 import Data.Foldable (fold)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.NonEmpty (NonEmpty(NonEmpty))
-import Effect.Aff as Aff
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Subscription as HS
 import Web.HTML.Common (ClassName(ClassName))
 
 import Capabilities (class MonadRandom, choose, range)
@@ -190,29 +187,19 @@ render source (Just (Rabbit r)) = HH.img [
 
 type Slot = H.Slot Query Void
 
-data Query a = Update a
-
-timer :: forall m. MonadAff m => m (HS.Emitter Unit)
-timer = do
-    {emitter, listener} <- H.liftEffect HS.create
-    _ <- H.liftAff $ Aff.forkAff $ forever do
-        Aff.delay $ Aff.Milliseconds 150.0
-        H.liftEffect $ HS.notify listener unit
-    pure emitter
+data Query a = Tick a
 
 component :: forall m. MonadRandom m => MonadAff m => String -> H.Component Query (Maybe Rabbit) Unit m
 component source = H.mkComponent {
     initialState : pure Nothing,
     render : render source,
     eval : H.mkEval $ H.defaultEval {
-        handleAction = pure do
+        handleQuery = \(Tick x) -> do
             oldRab <- H.get
             newRab <- case oldRab of
                 Just rab -> tick rab
-                Nothing -> do
-                    _ <- H.subscribe =<< timer
-                    new
-            H.put $ Just newRab,
-        initialize = Just unit
+                Nothing -> new
+            H.put $ Just newRab
+            pure $ Just x
         }
     }
